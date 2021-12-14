@@ -601,6 +601,42 @@
 					"response": []
 				},
 				{
+					"name": "Submit an order with invalid token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookId\": 1,\r\n    \"customerName\": \"Anna Kowalska\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Submit an order with the same book",
 					"request": {
 						"auth": {
@@ -773,6 +809,40 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get all orders (with invalid authentication)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "123456789",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -827,6 +897,62 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get order with ID=PqvG8gFMJGlulrOFPahCl (with invalid authentication)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "123456789",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/PqvG8gFMJGlulrOFPahCl",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"PqvG8gFMJGlulrOFPahCl"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order with ID=chomik (with authentication)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/chomik",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"chomik"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -875,6 +1001,43 @@
 					"request": {
 						"auth": {
 							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"customerName\": \"Bogdan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orders/PqvG8gFMJGlulrOFPahCl",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"PqvG8gFMJGlulrOFPahCl"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update order with ID=PqvG8gFMJGlulrOFPahCl (with invalid authentication)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "123456789",
+									"type": "string"
+								}
+							]
 						},
 						"method": "PATCH",
 						"header": [],
@@ -959,6 +1122,83 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete order with valid ID (with invalid authorization)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orders/9NUfwXVXG4W6zT3XntcZ3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"orders",
+								"9NUfwXVXG4W6zT3XntcZ3"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete order with valid ID (with invalid authorization)",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/orders/VD88zm6jBkKijnM3pZ54G",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"orders",
+										"VD88zm6jBkKijnM3pZ54G"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 13 Dec 2021 18:35:10 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "33"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "etag",
+									"value": "W/\"21-bG6N9MGZ9+XoO/KuGDSYhW5FJyc\""
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Invalid bearer token.\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Delete order with valid ID (with authorization)",
