@@ -1,4 +1,4 @@
-# Simple-Books-API
+# Simple Books API
 W niniejszym repozytorium przedstawiono scenariusze testowe do wykonania testów API "Simple Books API" (https://simple-books-api.glitch.me). Wyodrębnione zostały przypadki testowe poszczególnych endpointów. Do każdego przypadku testowego podane zostały:
 
 1) nazwa testu,
