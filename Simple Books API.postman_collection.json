@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "b51aea0c-1107-48c0-af80-181cbddcf376",
 		"name": "Simple Books API",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18368784"
 	},
 	"item": [
 		{
@@ -10,6 +11,22 @@
 			"item": [
 				{
 					"name": "Check status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", () => {\r",
+									"    pm.expect(pm.response.text()).to.include(\"OK\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -32,6 +49,29 @@
 			"item": [
 				{
 					"name": "List of all books",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check the value types of JSON fields in all objects\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    responseJson.forEach((obj) => {\r",
+									"        pm.expect(obj.id).to.be.a('number');\r",
+									"        pm.expect(obj.name).to.be.a('string');\r",
+									"        pm.expect(obj.type).to.be.oneOf(['fiction', 'non-fiction']);\r",
+									"        pm.expect(obj.available).to.be.a('boolean');\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -49,6 +89,26 @@
 				},
 				{
 					"name": "Books with type=non-fiction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check the value type in the 'type' field in all JSON objects\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    responseJson.forEach((obj) => {\r",
+									"        pm.expect(obj.type).to.equal(\"non-fiction\");\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -72,6 +132,24 @@
 				},
 				{
 					"name": "Books with not valid type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid value for query parameter 'type'. \", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"     pm.expect(responseJson.error).to.equal(\"Invalid value for query parameter 'type'. Must be one of: fiction, non-fiction.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -95,6 +173,24 @@
 				},
 				{
 					"name": "List of books limited to 1 record (min limit value)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains only one item\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.lengthOf(1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -118,6 +214,25 @@
 				},
 				{
 					"name": "List of books limited to 20 record (max limit value)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains max of 20 items\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.lengthOf.at.most(20);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -141,6 +256,24 @@
 				},
 				{
 					"name": "List of books limited to not valid limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid value for query parameter 'limit'. \", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"     pm.expect(responseJson.error).to.equal(\"Invalid value for query parameter 'limit'. Cannot be greater than 20.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -164,6 +297,24 @@
 				},
 				{
 					"name": "List of books with limit=0",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid value for query parameter 'limit'. \", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"     pm.expect(responseJson.error).to.equal(\"Invalid value for query parameter 'limit'. It cannot be less than 1.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -187,6 +338,24 @@
 				},
 				{
 					"name": "List of books with limit=chomik",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid value for query parameter 'chomik'. \", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"     pm.expect(responseJson.error).to.equal(\"Invalid value for query parameter 'chomik'. The parameter value is not a numeric value\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -210,6 +379,24 @@
 				},
 				{
 					"name": "List of books with empty limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid value for empty query parameter\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"     pm.expect(responseJson.error).to.equal(\"Invalid value for empty query parameter. The parameter value should be a numeric value\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -233,6 +420,27 @@
 				},
 				{
 					"name": "List of books with limit=2 and type=fiction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains two items, both with the type = 'fiction'\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson).to.have.lengthOf(2);\r",
+									"    responseJson.forEach((item) => {\r",
+									"        pm.expect(item.type).to.equal('fiction');\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -265,6 +473,24 @@
 			"item": [
 				{
 					"name": "Get book with ID=2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains item with id = 2\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.id).to.equal(2);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -283,6 +509,24 @@
 				},
 				{
 					"name": "Get book with ID=-5",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body does not contains item with id = -5\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"No book with id -5\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -301,6 +545,24 @@
 				},
 				{
 					"name": "Get book with ID=50",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body does not contains item with id = 50\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"No book with id 50\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -319,6 +581,24 @@
 				},
 				{
 					"name": "Get book with ID=chomik",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body does not contains item with NaN id = 'chomik'\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"No book with id NaN\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -342,12 +622,54 @@
 			"item": [
 				{
 					"name": "Register API client",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct registration of the client in the database\", () => {\r",
+									"     pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Checking the length of the access token\", () => {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.accessToken).to.have.lengthOf(64);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const clientName = \"Klient\" + Math.floor(Math.random() * 1000) + 1;\r",
+									"\r",
+									"const generateEmail = () => {\r",
+									"  const emailPrefix = \"example\";\r",
+									"  const emailDomain = \"api.com\";\r",
+									"  const randomNumber = Math.floor(Math.random() * 1000000);\r",
+									"\r",
+									"  return `${emailPrefix}${randomNumber}@${emailDomain}`;\r",
+									"}\r",
+									"\r",
+									"//ustawienie zmodyfikowanego body w formacie JSON\r",
+									"pm.request.body.raw = JSON.stringify({\r",
+									"    \"clientName\": clientName,\r",
+									"    \"clientEmail\": generateEmail()\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"clientName\": \"Jan\",\r\n    \"clientEmail\": \"jan@api.com\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -365,74 +687,34 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Register API client",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"clientName\": \"Jan\",\r\n    \"clientEmail\": \"jan@api.com\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/api-clients/",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api-clients",
-										""
-									]
-								}
-							},
-							"status": "Created",
-							"code": 201,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Sun, 05 Dec 2021 18:24:55 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "82"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "x-powered-by",
-									"value": "Express"
-								},
-								{
-									"key": "etag",
-									"value": "W/\"52-t9uPjlBfm/W0wW7r5fltMcVQo9I\""
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"accessToken\": \"786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf\"\n}"
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Register API client with the same name and email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 409\", () => {\r",
+									"    pm.response.to.have.status(409);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information that API client already registered\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"API client already registered. Try a different email.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"clientName\": \"Jan\",\r\n    \"clientEmail\": \"jan@api.com\"\r\n}",
+							"raw": "{\r\n    \"clientName\": \"Hanna\",\r\n    \"clientEmail\": \"hanna@api.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -454,12 +736,30 @@
 				},
 				{
 					"name": "Register API client without name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid or missing client name\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Invalid or missing client name.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"clientName\": \"\",\r\n    \"clientEmail\": \"jan@restapi.com\"\r\n}",
+							"raw": "{\r\n    \"clientName\": \"\",\r\n    \"clientEmail\": \"anna@api.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -481,6 +781,24 @@
 				},
 				{
 					"name": "Register API client with wrong email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid or missing client email\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Invalid or missing client email.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -508,6 +826,24 @@
 				},
 				{
 					"name": "Register API client with empty body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid or missing client name\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Invalid or missing client name.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -540,12 +876,30 @@
 			"item": [
 				{
 					"name": "Submit an order without authentication",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about missing Authorization header\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Missing Authorization header.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"bookId\": 2,\r\n    \"customerName\": \"Jan Nowak 2\"\r\n}",
+							"raw": "{\r\n    \"bookId\": 2,\r\n    \"customerName\": \"Anna\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -566,13 +920,41 @@
 				},
 				{
 					"name": "Submit an order with valid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Submit an order with authentication.\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.created).to.equal(true);\r",
+									"   pm.expect(responseJson.orderId).to.have.lengthOf(21);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"value": "66cbc95571b04527c7885fc4d5a393d3d6f6d1f94ed33f257963f919659a7a73",
 									"type": "string"
 								}
 							]
@@ -581,7 +963,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"bookId\": 1,\r\n    \"customerName\": \"Anna Kowalska\"\r\n}",
+							"raw": "{\r\n    \"bookId\": 4,\r\n    \"customerName\": \"Hanna\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -602,6 +984,24 @@
 				},
 				{
 					"name": "Submit an order with invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid bearer token.\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Invalid bearer token.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -617,7 +1017,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"bookId\": 1,\r\n    \"customerName\": \"Anna Kowalska\"\r\n}",
+							"raw": "{\r\n    \"bookId\": 6,\r\n    \"customerName\": \"Hanna\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -638,13 +1038,32 @@
 				},
 				{
 					"name": "Submit an order with the same book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Submit an order with authentication with the same book and client.\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.created).to.equal(true);\r",
+									"   pm.expect(responseJson.orderId).to.have.lengthOf(21);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"value": "66cbc95571b04527c7885fc4d5a393d3d6f6d1f94ed33f257963f919659a7a73",
 									"type": "string"
 								}
 							]
@@ -653,7 +1072,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"bookId\": 1,\r\n    \"customerName\": \"Jan Nowak\"\r\n}",
+							"raw": "{\r\n    \"bookId\": 1,\r\n    \"customerName\": \"Hanna\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -674,13 +1093,40 @@
 				},
 				{
 					"name": "Submit an order with invalid book (not available)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Information about an unavailable book\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"This book is not in stock. Try again later.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"value": "66cbc95571b04527c7885fc4d5a393d3d6f6d1f94ed33f257963f919659a7a73",
 									"type": "string"
 								}
 							]
@@ -689,7 +1135,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"bookId\": 2,\r\n    \"customerName\": \"Jan Nowak 2\"\r\n}",
+							"raw": "{\r\n    \"bookId\": 2,\r\n    \"customerName\": \"Hanna\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -710,13 +1156,40 @@
 				},
 				{
 					"name": "Submit an order with wrong bookID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains information about invalid or missing bookId.\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Invalid or missing bookId.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"value": "66cbc95571b04527c7885fc4d5a393d3d6f6d1f94ed33f257963f919659a7a73",
 									"type": "string"
 								}
 							]
@@ -725,7 +1198,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"bookId\": \"chomik\",\r\n    \"customerName\": \"Jan Nowak\"\r\n}",
+							"raw": "{\r\n    \"bookId\": \"chomik\",\r\n    \"customerName\": \"Hanna\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -751,6 +1224,31 @@
 			"item": [
 				{
 					"name": "Get all orders (with authentication)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check the value types of JSON fields in all objects\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    responseJson.forEach((obj) => {\r",
+									"        pm.expect(obj.id).to.be.a('string');\r",
+									"        pm.expect(obj.bookId).to.be.a('number');\r",
+									"        pm.expect(obj.customerName).to.be.a('string');\r",
+									"        pm.expect(obj.createdBy).to.have.lengthOf.at.most(64);\r",
+									"        pm.expect(obj.quantity).to.be.a('number');\r",
+									"        pm.expect(obj.timestamp).to.be.a('number');\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -760,7 +1258,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"value": "66cbc95571b04527c7885fc4d5a393d3d6f6d1f94ed33f257963f919659a7a73",
 									"type": "string"
 								}
 							]
@@ -785,6 +1283,24 @@
 				},
 				{
 					"name": "Get all orders (without authentication)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about missing Authorization header.\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Missing Authorization header.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -812,6 +1328,24 @@
 				},
 				{
 					"name": "Get all orders (with invalid authentication)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid bearer token.\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Invalid bearer token.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -850,14 +1384,37 @@
 			"name": "Get an order",
 			"item": [
 				{
-					"name": "Get order with ID=PqvG8gFMJGlulrOFPahCl (with authentication)",
+					"name": "Get order with ID (with authentication)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check the value types of JSON fields in all objects\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"        pm.expect(responseJson.id).to.equal('S5_YQZtF60pEqMQhS7zDA');\r",
+									"        pm.expect(responseJson.bookId).to.equal(4);\r",
+									"        pm.expect(responseJson.customerName).to.equal('Hanna');\r",
+									"        pm.expect(responseJson.createdBy).to.have.lengthOf.at.most(64);\r",
+									"        pm.expect(responseJson.quantity).to.be.a('number');\r",
+									"        pm.expect(responseJson.timestamp).to.be.a('number');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"value": "66cbc95571b04527c7885fc4d5a393d3d6f6d1f94ed33f257963f919659a7a73",
 									"type": "string"
 								}
 							]
@@ -865,20 +1422,38 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/orders/PqvG8gFMJGlulrOFPahCl",
+							"raw": "{{baseUrl}}/orders/S5_YQZtF60pEqMQhS7zDA",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"orders",
-								"PqvG8gFMJGlulrOFPahCl"
+								"S5_YQZtF60pEqMQhS7zDA"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get order with ID=PqvG8gFMJGlulrOFPahCl (without authentication)",
+					"name": "Get order with ID (without authentication)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about missing Authorization header.\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Missing Authorization header.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -886,20 +1461,38 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/orders/PqvG8gFMJGlulrOFPahCl",
+							"raw": "{{baseUrl}}/orders/S5_YQZtF60pEqMQhS7zDA",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"orders",
-								"PqvG8gFMJGlulrOFPahCl"
+								"S5_YQZtF60pEqMQhS7zDA"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get order with ID=PqvG8gFMJGlulrOFPahCl (with invalid authentication)",
+					"name": "Get order with ID (with invalid authentication)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid bearer token.\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Invalid bearer token.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -914,13 +1507,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/orders/PqvG8gFMJGlulrOFPahCl",
+							"raw": "{{baseUrl}}/orders/S5_YQZtF60pEqMQhS7zDA",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"orders",
-								"PqvG8gFMJGlulrOFPahCl"
+								"S5_YQZtF60pEqMQhS7zDA"
 							]
 						}
 					},
@@ -928,13 +1521,31 @@
 				},
 				{
 					"name": "Get order with ID=chomik (with authentication)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains information about no order\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"No order with id chomik.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"value": "66cbc95571b04527c7885fc4d5a393d3d6f6d1f94ed33f257963f919659a7a73",
 									"type": "string"
 								}
 							]
@@ -960,14 +1571,27 @@
 			"name": "Update an order",
 			"item": [
 				{
-					"name": "Update order with ID=PqvG8gFMJGlulrOFPahCl (with authentication)",
+					"name": "Update order with ID (with authentication)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", () => {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"value": "66cbc95571b04527c7885fc4d5a393d3d6f6d1f94ed33f257963f919659a7a73",
 									"type": "string"
 								}
 							]
@@ -976,7 +1600,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"customerName\": \"Kazimierz\"\r\n}",
+							"raw": "{\r\n   \"customerName\": \"Joanna\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -984,20 +1608,38 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/orders/PqvG8gFMJGlulrOFPahCl",
+							"raw": "{{baseUrl}}/orders/S5_YQZtF60pEqMQhS7zDA",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"orders",
-								"PqvG8gFMJGlulrOFPahCl"
+								"S5_YQZtF60pEqMQhS7zDA"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Update order with ID=PqvG8gFMJGlulrOFPahCl (without authentication)",
+					"name": "Update order with ID (without authentication)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about missing Authorization header.\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Missing Authorization header.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -1027,7 +1669,25 @@
 					"response": []
 				},
 				{
-					"name": "Update order with ID=PqvG8gFMJGlulrOFPahCl (with invalid authentication)",
+					"name": "Update order with ID (with invalid authentication)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid bearer token.\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Invalid bearer token.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1065,13 +1725,31 @@
 				},
 				{
 					"name": "Update order with ID=5 (doesn't eqist)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains information about no order\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"No order with id 5.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"value": "66cbc95571b04527c7885fc4d5a393d3d6f6d1f94ed33f257963f919659a7a73",
 									"type": "string"
 								}
 							]
@@ -1107,17 +1785,35 @@
 			"item": [
 				{
 					"name": "Delete order with valid ID (without authorization)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about missing Authorization header.\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Missing Authorization header.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/orders/9NUfwXVXG4W6zT3XntcZ3",
+							"raw": "{{baseUrl}}/orders/5p5bme_JFgwhf3ZoGdkwg",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"orders",
-								"9NUfwXVXG4W6zT3XntcZ3"
+								"5p5bme_JFgwhf3ZoGdkwg"
 							]
 						}
 					},
@@ -1125,13 +1821,31 @@
 				},
 				{
 					"name": "Delete order with valid ID (with invalid authorization)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", () => {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body contains information about invalid bearer token.\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"Invalid bearer token.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"value": "123456789",
 									"type": "string"
 								}
 							]
@@ -1139,76 +1853,40 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/orders/9NUfwXVXG4W6zT3XntcZ3",
+							"raw": "{{baseUrl}}/orders/5p5bme_JFgwhf3ZoGdkwg",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"orders",
-								"9NUfwXVXG4W6zT3XntcZ3"
+								"5p5bme_JFgwhf3ZoGdkwg"
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Delete order with valid ID (with invalid authorization)",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/orders/VD88zm6jBkKijnM3pZ54G",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"orders",
-										"VD88zm6jBkKijnM3pZ54G"
-									]
-								}
-							},
-							"status": "Unauthorized",
-							"code": 401,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Mon, 13 Dec 2021 18:35:10 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "33"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "x-powered-by",
-									"value": "Express"
-								},
-								{
-									"key": "etag",
-									"value": "W/\"21-bG6N9MGZ9+XoO/KuGDSYhW5FJyc\""
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"error\": \"Invalid bearer token.\"\n}"
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Delete order with valid ID (with authorization)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", () => {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
+									"value": "66cbc95571b04527c7885fc4d5a393d3d6f6d1f94ed33f257963f919659a7a73",
 									"type": "string"
 								}
 							]
@@ -1216,214 +1894,63 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/orders/9NUfwXVXG4W6zT3XntcZ3",
+							"raw": "{{baseUrl}}/orders/S5_YQZtF60pEqMQhS7zDA",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"orders",
-								"9NUfwXVXG4W6zT3XntcZ3"
+								"S5_YQZtF60pEqMQhS7zDA"
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Delete order with valid ID (with authorization)",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/orders/VD88zm6jBkKijnM3pZ54G",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"orders",
-										"VD88zm6jBkKijnM3pZ54G"
-									]
-								}
-							},
-							"status": "No Content",
-							"code": 204,
-							"_postman_previewlanguage": "plain",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Mon, 13 Dec 2021 16:32:26 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "x-powered-by",
-									"value": "Express"
-								}
-							],
-							"cookie": [],
-							"body": null
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Delete the same order with valid ID (with authorization)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/orders/9NUfwXVXG4W6zT3XntcZ3",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"orders",
-								"9NUfwXVXG4W6zT3XntcZ3"
-							]
-						}
-					},
-					"response": [
+					"event": [
 						{
-							"name": "Delete the same order with valid ID (with authorization)",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/orders/VD88zm6jBkKijnM3pZ54G",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"orders",
-										"VD88zm6jBkKijnM3pZ54G"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Mon, 13 Dec 2021 16:33:59 GMT"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "51"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "x-powered-by",
-									"value": "Express"
-								},
-								{
-									"key": "etag",
-									"value": "W/\"33-Q1Bcc3KxAMOlGHKtvMBX6Zi+Pmk\""
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"error\": \"No order with id VD88zm6jBkKijnM3pZ54G.\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Delete order with valid ID and not empty body (with authorization)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "786ee94ee04b0ae635b15fb94bdd4d5fb3982c988ee51517b38028ff56307bcf",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"customerName\": \"chomik\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", () => {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains information about no order\", () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.error).to.equal(\"No order with id S5_YQZtF60pEqMQhS7zDA.\");\r",
+									"});"
+								],
+								"type": "text/javascript"
 							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "66cbc95571b04527c7885fc4d5a393d3d6f6d1f94ed33f257963f919659a7a73",
+									"type": "string"
+								}
+							]
 						},
+						"method": "DELETE",
+						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/orders/SSaIg9DgocGb1cHkuWJSw",
+							"raw": "{{baseUrl}}/orders/S5_YQZtF60pEqMQhS7zDA",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"orders",
-								"SSaIg9DgocGb1cHkuWJSw"
+								"S5_YQZtF60pEqMQhS7zDA"
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Delete order with valid ID and not empty body (with authorization)",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"customerName\": \"chomik\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/orders/DvpOWjtNEFkU5T7ZKTElP",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"orders",
-										"DvpOWjtNEFkU5T7ZKTElP"
-									]
-								}
-							},
-							"status": "No Content",
-							"code": 204,
-							"_postman_previewlanguage": "plain",
-							"header": [
-								{
-									"key": "Date",
-									"value": "Mon, 13 Dec 2021 16:35:55 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "x-powered-by",
-									"value": "Express"
-								}
-							],
-							"cookie": [],
-							"body": null
-						}
-					]
+					"response": []
 				}
 			]
 		}
