@@ -17,11 +17,11 @@ Do wykonania niektórych testów niezbędny jest **Bearer Token** wprowadzony w 
 
 ![alt text](https://github.com/MichalakMarta/Simple_Books_API/blob/main/bearerToken.png)
 
-Każdy przypadek testowy zawiera również zautomatyzowaną **asercję**. 
+Przypadki testowe zawierają również testy automatyczne sprawdzające status zwracanej odpowiedzi oraz poprawność zwracanych danych. W zależności od przypadku testowego, sprawdzeniu podlega typ zwracanych danych lub ich wartość. 
 
 ![alt text](https://github.com/MichalakMarta/Simple_Books_API/blob/main/listOfAllBooks.png)
 
-Poniższy przypadek zawiera również zdefiniowane **pre-request Script**. Przed wysłaniem właściwego requestu wysyłane są losowe dane dla **clientName** i **clientEmail**, w celu zaoszczędzenia czasu na uzupełnianiu ich manualnie, aby wykonać ponownie test. 
+Przypadek dot. rejestracji API kloenta zawiera również zdefiniowane **pre-request Script**. Przed wysłaniem właściwego requestu losowane są dane dla **clientName** i **clientEmail**, w celu zaoszczędzenia czasu na ich manualne uzupełnianie, aby było możliwe ponowne wykonanie testu. 
 
 ![alt text](https://github.com/MichalakMarta/Simple_Books_API/blob/main/registerAPIClient.png)
 
