@@ -1,6 +1,6 @@
 # Simple Books API
-W niniejszym repozytorium przedstawiono scenariusz testowy do wykonania testów API "Simple Books API" ([link do api](https://simple-books-api.glitch.me), 
-[dokumentacja](https://github.com/vdespa/introduction-to-postman-course/blob/main/simple-books-api.md). 
+W niniejszym repozytorium przedstawiono [scenariusz testowy](https://github.com/MichalakMarta/Simple_Books_API/blob/main/Simple%20Books%20API%20Postman%20-%20scenariusz%20testowy.pdf) do wykonania testów API **Simple Books API** [link do api](https://simple-books-api.glitch.me), 
+[dokumentacja](https://github.com/vdespa/introduction-to-postman-course/blob/main/simple-books-api.md)). 
 Wyodrębnione zostały przypadki testowe poszczególnych endpointów. Do każdego przypadku testowego podane zostały:
 
 1) nazwa testu,
@@ -21,7 +21,11 @@ Przypadki testowe zawierają również testy automatyczne sprawdzające status z
 
 ![alt text](https://github.com/MichalakMarta/Simple_Books_API/blob/main/listOfAllBooks.png)
 
-Przypadek dot. rejestracji API kloenta zawiera również zdefiniowane **pre-request Script**. Przed wysłaniem właściwego requestu losowane są dane dla **clientName** i **clientEmail**, w celu zaoszczędzenia czasu na ich manualne uzupełnianie, aby było możliwe ponowne wykonanie testu. 
+Przypadek dotyczący rejestracji API klienta zawiera również zdefiniowane **pre-request Script**. Przed wysłaniem właściwego requestu losowane są dane dla **clientName** i **clientEmail**, w celu zaoszczędzenia czasu na ich manualne uzupełnianie, aby możliwe było ponowne wykonanie testu. 
 
 ![alt text](https://github.com/MichalakMarta/Simple_Books_API/blob/main/registerAPIClient.png)
+
+Repozytorium zawiera również raport w html z przebiegu testów, do którego wykorzystany został **Newman**.
+
+![alt text](https://github.com/MichalakMarta/Simple_Books_API/blob/main/newmanRaport.png)
 
